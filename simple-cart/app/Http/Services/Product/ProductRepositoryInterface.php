@@ -11,4 +11,6 @@ interface ProductRepositoryInterface
 {
     public function create(ProductEntity $product): Products;
     public function getAll(): array;
+    public function getById(int $id): Products;
+    public function deleteById(int $id): void;
 }

@@ -29,6 +29,19 @@ class Controller extends BaseController
         );
     }
 
+    protected function sendMessage(
+        string $message,
+        ?int $statusCode = Response::HTTP_OK
+    ): JsonResponse
+    {
+        return response()->json(
+            [
+                'message' => $message
+            ],
+            $statusCode
+        );
+    }
+
     protected function sendPaginatedData(
         string $message,
         int $total,

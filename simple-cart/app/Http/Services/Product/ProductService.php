@@ -26,4 +26,14 @@ class ProductService {
     {
         return $this->productRepositoryInterface->getAll();
     }
+
+    public function getById(int $id): Products
+    {
+        return $this->productRepositoryInterface->getById($id);
+    }
+
+    public function deleteById(int $id): void
+    {
+        $this->productRepositoryInterface->deleteById($id);
+    }
 }

@@ -19,4 +19,15 @@ class ProductRepository implements ProductRepositoryInterface
     {
         return Products::paginate(15)->toArray();
     }
+
+    public function getById(int $id): Products
+    {
+        return Products::find($id);
+    }
+
+    public function deleteById(int $id): void
+    {
+        Products::find($id)->delete();
+    }
+
 }

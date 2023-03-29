@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductCreateRequest;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductPaginateResource;
 use App\Http\Resources\ProductResource;
@@ -10,6 +11,7 @@ use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Infra\Product\ProductRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 class ProductController extends Controller
 {
@@ -46,7 +48,7 @@ class ProductController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(ProductRequest $request): JsonResponse
+    public function create(ProductCreateRequest $request): JsonResponse
     {
         try {
             $data = $request->validated();
@@ -73,9 +75,20 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(ProductRequest $request)
     {
-        //
+        try {
+            $data = $request->validated();
+
+            $product = $this->productService->getById($data['id']);
+
+            return $this->sendDataWithMessage(
+                message: 'Produtos encontrados',
+                data: ProductResource::make($product)
+            );
+        } catch (Exception $e) {
+            dd($e);
+        }
     }
 
     /**
@@ -99,6 +112,15 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        try {
+            $product = $this->productService->deleteById($id);
+
+            return $this->sendMessage(
+                message: 'Produto deletado',
+                statusCode: Response::HTTP_NO_CONTENT
+            );
+        } catch (Exception $e) {
+            dd($e);
+        }
     }
 }

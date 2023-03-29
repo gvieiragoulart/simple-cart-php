@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProductRequest extends FormRequest
+class ProductCreateRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -14,7 +14,9 @@ class ProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => ['required', 'exists:products,id'],
+            'title'         => 'string|required',
+            'price'         => 'numeric|required',
+            'description'   => 'string'
         ];
     }
 }

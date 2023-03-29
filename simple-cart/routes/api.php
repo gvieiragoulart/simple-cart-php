@@ -20,7 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::controller(ProductController::class)->group(function () {
-    Route::get('/product/{id}', 'show');
+    Route::get('/product/show', 'show');
     Route::get('/product', 'index');
     Route::post('/product', 'create');
 });
