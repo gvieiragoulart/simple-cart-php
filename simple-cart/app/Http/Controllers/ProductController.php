@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductCreateRequest;
+use App\Http\Requests\ProductEditRequest;
 use App\Http\Requests\ProductRequest;
 use App\Http\Resources\ProductPaginateResource;
 use App\Http\Resources\ProductResource;
@@ -94,9 +95,27 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(ProductEditRequest $request, int $id)
     {
-        //
+        try {
+            $data = $request->validated();
+
+            $product = $this->productService->editById(data: $data, id: $id);
+
+            if($product == false) {
+                return $this->sendMessage(
+                    message: 'Produto não encontrado',
+                    statusCode: Response::HTTP_OK
+                );
+            }
+
+            return $this->sendDataWithMessage(
+                message: 'Produtos editado',
+                data: ProductResource::make($product)
+            );
+        } catch (Exception $e) {
+            dd($e);
+        }
     }
 
     /**
@@ -113,7 +132,14 @@ class ProductController extends Controller
     public function destroy(string $id)
     {
         try {
-            $product = $this->productService->deleteById($id);
+            $isDeleted = $this->productService->deleteById($id);
+
+            if($isDeleted == false) {
+                return $this->sendMessage(
+                    message: 'Produto não encontrado',
+                    statusCode: Response::HTTP_OK
+                );
+            }
 
             return $this->sendMessage(
                 message: 'Produto deletado',

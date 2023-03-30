@@ -27,13 +27,27 @@ class ProductService {
         return $this->productRepositoryInterface->getAll();
     }
 
-    public function getById(int $id): Products
+    public function getById(int $id): ?Products
     {
         return $this->productRepositoryInterface->getById($id);
     }
 
-    public function deleteById(int $id): void
+    public function deleteById(int $id): bool
     {
-        $this->productRepositoryInterface->deleteById($id);
+        if($this->getById($id)) {
+            $this->productRepositoryInterface->deleteById($id);
+            return true;
+        }
+
+        return false;
+    }
+
+    public function editById(array $data,int $id): Products|bool
+    {
+        if($this->getById($id)) {
+            return $this->productRepositoryInterface->editById($data, $id);
+        }
+
+        return false;
     }
 }

@@ -16,6 +16,7 @@ class ProductCreateRequest extends FormRequest
         return [
             'title'         => 'string|required',
             'price'         => 'numeric|required',
+            'quantity'      => 'int|required',
             'description'   => 'string'
         ];
     }

@@ -20,7 +20,7 @@ class ProductRepository implements ProductRepositoryInterface
         return Products::paginate(15)->toArray();
     }
 
-    public function getById(int $id): Products
+    public function getById(int $id): ?Products
     {
         return Products::find($id);
     }
@@ -30,4 +30,12 @@ class ProductRepository implements ProductRepositoryInterface
         Products::find($id)->delete();
     }
 
+    public function editById(array $data, int $id): Products
+    {
+        $product = Products::find($id);
+
+        $product->update($data);
+
+        return $product;
+    }
 }
